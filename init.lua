@@ -358,11 +358,11 @@ require("lazy").setup({
 
 					-- The following autocommand is used to enable inlay hints in your
 					-- code, if the language server you are using supports them
-					if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
-						map("<leader>th", function()
-							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-						end, "[T]oggle Inlay [H]ints")
-					end
+					-- if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+					-- 	map("<leader>th", function()
+					-- 		vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+					-- 	end, "[T]oggle Inlay [H]ints")
+					-- end
 				end,
 			})
 
@@ -704,6 +704,22 @@ require("lazy").setup({
 
 			vim.keymap.set("n", "<leader>tt", function()
 				require("trouble").toggle("diagnostics")
+			end)
+		end,
+	},
+	{
+		"stevearc/oil.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			local oil = require("oil")
+			oil.setup({
+				view_options = {
+					show_hidden = true,
+				},
+			})
+
+			vim.keymap.set("n", "<leader>ex", function()
+				oil.open()
 			end)
 		end,
 	},
