@@ -702,7 +702,6 @@ require("lazy").setup({
 					lualine_c = {
 						{
 							"filename",
-							file_status = true,
 							path = 1,
 						},
 					},
@@ -724,17 +723,17 @@ require("lazy").setup({
 							end,
 							padding = 3,
 						},
-						{
-							function()
-								if vim.bo.expandtab then
-									return "󱁐"
-								else
-									return ""
-								end
-							end,
-							padding = 2,
-						},
-						"encoding",
+						-- {
+						-- 	function()
+						-- 		if vim.bo.expandtab then
+						-- 			return "󱁐"
+						-- 		else
+						-- 			return ""
+						-- 		end
+						-- 	end,
+						-- 	padding = 2,
+						-- },
+						-- "encoding",
 						"fileformat",
 						"filetype",
 					},
