@@ -1,4 +1,10 @@
 --[[
+
+To run lazy settings, run `:Lazy`
+
+To check keybinding health and if any keys overlap with each other ->
+:checkhealth which-key
+
 Commands that will help you out a lot:
 - :Tutor -> Kickstart Guide 
 - :help -> Reading general documentation
@@ -82,6 +88,17 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
+
+-- set fold settings
+-- These options are recomended by nvim-ufo
+-- https://github.com/kevinhwang91/nvim-ufo --> minimal configuration
+vim.opt.foldcolumn = "0"
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+vim.opt.foldenable = true
+
+-- place a column line
+vim.opt.colorcolumn = "80"
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -508,12 +525,25 @@ require("lazy").setup({
 			--  into multiple repos for maintenance purposes.
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-buffer",
+			"saadparwaiz1/cmp_luasnip",
+			"rafamadriz/friendly-snippets",
+			"onsails/lspkind.nvim",
+			"windwp/nvim-ts-autotag",
+			"windwp/nvim-autopairs",
 		},
 		config = function()
 			-- See `:help cmp`
 			local cmp = require("cmp")
+			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 			local luasnip = require("luasnip")
+			local lspkind = require("lspkind")
 			luasnip.config.setup({})
+
+			require("nvim-autopairs").setup()
+
+			-- Integrate nvim-autopairs with cmp
+			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 			cmp.setup({
 				snippet = {
@@ -539,6 +569,22 @@ require("lazy").setup({
 					{ name = "nvim_lsp" },
 					{ name = "luasnip" },
 					{ name = "path" },
+				},
+				window = {
+					completion = cmp.config.window.bordered(),
+					documentation = cmp.config.window.bordered(),
+				},
+				-- Enable pictogram icons for lsp/autocompletion
+				formatting = {
+					expandable_indicator = true,
+					format = lspkind.cmp_format({
+						mode = "symbol_text",
+						maxwidth = 50,
+						ellipsis_char = "...",
+						symbol_map = {
+							Copilot = "",
+						},
+					}),
 				},
 			})
 		end,
@@ -731,6 +777,33 @@ require("lazy").setup({
 				-- Configuration here, or leave empty to use defaults
 			})
 		end,
+	},
+	{
+		"stevearc/dressing.nvim",
+		config = function()
+			require("dressing").setup()
+		end,
+	},
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		event = "BufEnter",
+		opts = {
+			indent = {
+				char = "│",
+				tab_char = "│",
+			},
+			scope = { enabled = false },
+			exclude = {
+				filetypes = {
+					"help",
+					"lazy",
+					"mason",
+					"notify",
+					"oil",
+				},
+			},
+		},
+		main = "ibl",
 	},
 }, {
 	ui = {
