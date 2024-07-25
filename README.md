@@ -11,5 +11,5 @@ My neovim config.
 1. Backup your previous configuration (if it exists)
 2. Run
    ```sh
-   git clone https://github.com/viddrobnic/init.lua.git ~./config/nvim
+   git clone https://github.com/tjazerzen/init.lua.git ~./config/nvim
    ```
