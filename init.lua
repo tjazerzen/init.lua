@@ -804,6 +804,54 @@ require("lazy").setup({
 		},
 		main = "ibl",
 	},
+	{
+		"iamcco/markdown-preview.nvim",
+		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+		build = "cd app && yarn install",
+		init = function()
+			vim.g.mkdp_filetypes = { "markdown" }
+		end,
+		ft = { "markdown" },
+	},
+	{
+		"nvim-pack/nvim-spectre",
+		lazy = true,
+		cmd = { "Spectre" },
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"catppuccin/nvim",
+		},
+		config = function()
+			local theme = require("catppuccin.palettes").get_palette("frappe")
+
+			vim.api.nvim_set_hl(0, "SpectreSearch", { bg = theme.red, fg = theme.base })
+			vim.api.nvim_set_hl(0, "SpectreReplace", { bg = theme.green, fg = theme.base })
+
+			require("spectre").setup({
+				highlight = {
+					search = "SpectreSearch",
+					replace = "SpectreReplace",
+				},
+				mapping = {
+					["send_to_qf"] = {
+						map = "<C-q>",
+						cmd = "<cmd>lua require('spectre.actions').send_to_qf()<CR>",
+						desc = "send all items to quickfix",
+					},
+				},
+				replace_engine = {
+					sed = {
+						cmd = "sed",
+						args = {
+							"-i",
+							"",
+							"-E",
+						},
+					},
+				},
+			})
+		end,
+	},
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {
