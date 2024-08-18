@@ -6,7 +6,6 @@ To check keybinding health and if any keys overlap with each other ->
 :checkhealth which-key
 
 Commands that will help you out a lot:
-- :Tutor -> Kickstart Guide 
 - :help -> Reading general documentation
 - <leader>sh -> fuzzy finder for documentation
 - <leader>sk -> fuzzy finder for keybinds
@@ -38,7 +37,7 @@ require("remap")
 -- Highlight when yanking (copying) text - Try it with `yap` in normal mode. See `:help vim.highlight.on_yank()`
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
-	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+	group = vim.api.nvim_create_augroup("config-highlight-yank", { clear = true }),
 	callback = function()
 		vim.highlight.on_yank()
 	end,
@@ -52,6 +51,8 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+-- longer plugin configs are inside `lua/plugins/` directory and imported at the end of this file
+-- The rest are directly utilized here
 require("lazy").setup({
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
 	"numToStr/Comment.nvim",
