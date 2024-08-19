@@ -28,7 +28,19 @@ return {
 		local dapui = require("dapui")
 
 		-- dap-go setup
-		require("dap-go").setup()
+
+		require("dap-go").setup({
+			dap_configurations = {
+				{
+					type = "go",
+					name = "Attach to a running server",
+					mode = "remote",
+					request = "attach",
+					port = "38697",
+					host = "127.0.0.1",
+				},
+			},
+		})
 
 		-- mason-nvim-dap setup
 		require("mason-nvim-dap").setup({
@@ -130,36 +142,37 @@ return {
 		-- Keymaps setup
 
 		-- DEBUGGING KEYMAPS: for managing breakpoints
-		vim.keymap.set("n", "<F1>", dap.continue, { desc = "Debug: Continue" })
-		vim.keymap.set("n", "<F2>", dap.step_into, { desc = "Debug: Step Into" })
-		vim.keymap.set("n", "<F3>", dap.step_over, { desc = "Debug: Step Over" })
-		vim.keymap.set("n", "<F4>", dap.step_out, { desc = "Debug: Step Out" })
-		vim.keymap.set("n", "<F5>", dap.step_back, { desc = "Debug: Step Back" })
-		vim.keymap.set("n", "<F12>", dap.restart, { desc = "Debug: Restart" })
-		vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Debug: Toggle Breakpoint" })
-		vim.keymap.set("n", "<leader>B", function()
+		vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "[D]ebug: [C]ontinue" })
+		vim.keymap.set("n", "<leader>dsi", dap.step_into, { desc = "[D]ebug: [S]tep [I]nto" })
+		vim.keymap.set("n", "<leader>dso", dap.step_over, { desc = "[D]ebug: [S]tep [O]ver" })
+		vim.keymap.set("n", "<leader>dsq", dap.step_out, { desc = "[D]ebug: [S]tep out ([Q]uit)" })
+		-- not using step back since go `delve` doesn't support it anyways
+		-- vim.keymap.set("n", "<F5>", dap.step_back, { desc = "[D]ebug: [S]tep [B]ack" })
+		vim.keymap.set("n", "<leader>dr", dap.restart, { desc = "[D]ebug: [R]estart" })
+		vim.keymap.set("n", "<leader>dbt", dap.toggle_breakpoint, { desc = "[D]ebug: [B]reakpoint [T]oggle" })
+		vim.keymap.set("n", "<leader>dbs", function()
 			dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-		end, { desc = "Debug: Set Breakpoint" })
+		end, { desc = "[D]ebug: [B]reakpoint [S]et" })
 		-- Eval var under cursor
-		vim.keymap.set("n", "<space>?", function()
+		vim.keymap.set("n", "<leader>de", function()
 			require("dapui").eval(nil, { enter = true, context = "hover", width = 100, height = 20 })
-		end, { desc = "Debug: Evaluate variable under cursor" })
+		end, { desc = "[D]ebug: [E]val under cursor" })
 		-- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
-		vim.keymap.set("n", "<F7>", dapui.toggle, { desc = "Debug: See last session result." })
+		vim.keymap.set("n", "<leader>dl", dapui.toggle, { desc = "[D]ebug: [L]ast session result" })
 
 		-- DEBUGGING KEYMAPS: for entering and exiting debug modes
 		-- Toggle Debug Console (REPL)
 		vim.keymap.set("n", "<leader>dt", function()
 			require("dap").repl.toggle({ height = 15 })
-		end, { desc = "Debug: Toggle REPL" })
+		end, { desc = "[D]ebug: [T]oggle [R]EPL" })
 		-- Reopen All Debugger Panes
 		vim.keymap.set("n", "<leader>do", function()
 			require("dapui").open()
-		end, { desc = "Debug: Reopen All Panes" })
+		end, { desc = "[D]ebug: [O]pen all panes" })
 		-- Close All Debugger Panes
-		vim.keymap.set("n", "<leader>dc", function()
+		vim.keymap.set("n", "<leader>dq", function()
 			require("dapui").close()
-		end, { desc = "Debug: Close All Panes" })
+		end, { desc = "[D]ebug: [Q]uit all panes" })
 
 		dap.listeners.before.attach.dapui_config = function()
 			dapui.open()
