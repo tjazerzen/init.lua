@@ -21,16 +21,28 @@ return { -- autoformat
 				lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
 			}
 		end,
+		format_notify = function(success, errors)
+			if not success then
+				vim.notify("Formatting failed: " .. errors[1], vim.log.levels.ERROR)
+			else
+				vim.notify("Formatted", vim.log.levels.INFO)
+			end
+		end,
 
 		formatters_by_ft = {
 			lua = { "stylua" },
-			javascript = { "prettier" },
-			-- conform can also run multiple formatters sequentially
-			-- python = { "isort", "black" },
-			--
-			-- you can use a sub-list to tell conform to run *until* a formatter
-			-- is found.
-			-- javascript = { { "prettierd", "prettier" } },
+			javascript = { "prettier", "rustywind" },
+			typescript = { "prettier", "rustywind" },
+			javascriptreact = { "prettier", "rustywind" },
+			typescriptreact = { "prettier", "rustywind" },
+			html = { "djlint", "rustywind" },
+			css = { "prettier" },
+			scss = { "prettier" },
+			json = { "prettier" },
+			yaml = { "prettier" },
+			markdown = { "prettier" },
+			python = { "black", "isort" },
+			sh = { "shfmt" },
 		},
 	},
 }
