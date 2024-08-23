@@ -32,12 +32,11 @@ return {
 		require("dap-go").setup({
 			dap_configurations = {
 				{
+					-- useful for attaching to a running server and listening for breakpoints
 					type = "go",
-					name = "Attach to a running server",
+					name = "Attach remote",
 					mode = "remote",
 					request = "attach",
-					port = "38697",
-					host = "127.0.0.1",
 				},
 			},
 		})
@@ -134,7 +133,7 @@ return {
 
 		-- nvim-dap-virtual-text setup
 		require("nvim-dap-virtual-text").setup({
-			enabled = true,
+			enabled = false,
 		})
 
 		-- NOTE: we didn't setup nvim-nio here
