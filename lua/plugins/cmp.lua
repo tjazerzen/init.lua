@@ -37,6 +37,7 @@ return { -- Autocompletion
 		local luasnip = require("luasnip")
 		local lspkind = require("lspkind")
 		luasnip.config.setup({})
+		require("luasnip.loaders.from_vscode").lazy_load()
 
 		require("nvim-autopairs").setup()
 
