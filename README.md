@@ -3,6 +3,7 @@
 My neovim config.
 
 Support for the following functionality:
+
 - vim keybindings
 - fuzzy finding for grepping, files, and more
 - git support: see branch, gitblame
@@ -12,6 +13,8 @@ Support for the following functionality:
 - debugging (at the moment, only Go files)
 - language server support
 - search and replace across entire repository
+- VS-Code-like emmet abbreviations
+- Self closing HTML tags
 
 ## Requirements
 
