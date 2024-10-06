@@ -68,8 +68,10 @@ require("lazy").setup({
 				},
 				log_level = "off",
 			})
+
 			local api = require("supermaven-nvim.api")
 			api.use_free_version()
+
 			vim.keymap.set("n", "<leader>sm", api.toggle)
 		end,
 	},
@@ -145,6 +147,12 @@ require("lazy").setup({
 			},
 		},
 		main = "ibl",
+	},
+	{
+		"lewis6991/gitsigns.nvim",
+		config = function()
+			require("gitsigns").setup()
+		end,
 	},
 	{ import = "plugins" },
 }, {
