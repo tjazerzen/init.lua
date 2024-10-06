@@ -17,7 +17,7 @@ return { -- autoformat
 			-- disable "format_on_save lsp_fallback" for languages that don't have a well standardized coding style.
 			local disable_filetypes = { c = true, cpp = true }
 			return {
-				timeout_ms = 500,
+				timeout_ms = 2000,
 				lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
 			}
 		end,
@@ -37,6 +37,7 @@ return { -- autoformat
 			typescriptreact = { "prettier", "rustywind" },
 			html = { "djlint", "rustywind" },
 			css = { "prettier" },
+			cs = { "csharpier" },
 			scss = { "prettier" },
 			json = { "prettier" },
 			yaml = { "prettier" },

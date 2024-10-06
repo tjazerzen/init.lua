@@ -120,7 +120,7 @@ return { -- LSP Configuration & Plugins
 			},
 			golangci_lint_ls = {},
 			pyright = {},
-			tsserver = {
+			ts_ls = {
 				settings = {
 					completions = {
 						completeFunctionCalls = true,
@@ -147,6 +147,14 @@ return { -- LSP Configuration & Plugins
 							includeInlayVariableTypeHints = true,
 						},
 					},
+				},
+				filetypes = {
+					"javascript",
+					"javascriptreact",
+					"javascript.jsx",
+					"typescript",
+					"typescriptreact",
+					"typescript.tsx",
 				},
 			},
 			eslint = {
@@ -240,6 +248,7 @@ return { -- LSP Configuration & Plugins
 			},
 			spectral = {},
 			taplo = {},
+			csharp_ls = {},
 			-- ocamllsp = {}, TODO: Installing ocaml lsp doesn't work
 		}
 
