@@ -146,6 +146,7 @@ return { -- LSP Configuration & Plugins
 				},
 			},
 			eslint = {
+				autostart = false,
 				cmd = { "vscode-eslint-language-server", "--stdio", "--max-old-space-size=12288" },
 				settings = {
 					autoFixOnSave = true,
@@ -157,18 +158,7 @@ return { -- LSP Configuration & Plugins
 			cssmodules_ls = {
 				filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
 			},
-			yamlls = {
-				settings = {
-					yaml = {
-						schemas = {
-							["http://json.schemastore.org/github-workflow"] = ".github/workflows/*.{yml,yaml}",
-							["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
-							["http://json.schemastore.org/prettierrc"] = ".prettierrc.{yml,yaml}",
-							["http://json.schemastore.org/stylelintrc"] = ".stylelintrc.{yml,yaml}",
-						},
-					},
-				},
-			},
+			yamlls = {},
 			marksman = {},
 			lua_ls = {
 				Lua = {
@@ -176,22 +166,7 @@ return { -- LSP Configuration & Plugins
 					telemetry = { enable = false },
 				},
 			},
-			jsonls = {
-				settings = {
-					json = {
-						schemas = {
-							{
-								fileMatch = { "package.json" },
-								url = "https://json.schemastore.org/package.json",
-							},
-							{
-								fileMatch = { ".eslintrc.json", ".eslintrc" },
-								url = "https://json.schemastore.org/eslintrc.json",
-							},
-						},
-					},
-				},
-			},
+			jsonls = {},
 			spectral = {},
 			taplo = {},
 			csharp_ls = {},
