@@ -97,6 +97,17 @@ return { -- LSP Configuration & Plugins
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
 		capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
+		local ts_ls_inlay_hints = {
+			includeInlayEnumMemberValueHints = true,
+			includeInlayFunctionLikeReturnTypeHints = true,
+			includeInlayFunctionParameterTypeHints = true,
+			includeInlayParameterNameHints = "all",
+			includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+			includeInlayPropertyDeclarationTypeHints = true,
+			includeInlayVariableTypeHints = true,
+			includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+		}
+
 		-- Enable the following language servers
 		--  Add any additional override configuration in the following tables. Available keys are:
 		--  - cmd (table): Override the default command used to start the server
@@ -105,8 +116,11 @@ return { -- LSP Configuration & Plugins
 		--  - settings (table): Override the default settings passed when initializing the server.
 		--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 		local servers = {
+			bashls = {},
 			clangd = {},
 			cmake = {},
+			nil_ls = {},
+			sqlls = {},
 			gopls = {
 				gopls = {
 					hints = {
@@ -122,93 +136,24 @@ return { -- LSP Configuration & Plugins
 			pyright = {},
 			ts_ls = {
 				settings = {
-					completions = {
-						completeFunctionCalls = true,
+					maxts_lsMemory = 12288,
+					typescript = {
+						inlayHints = ts_ls_inlay_hints,
 					},
 					javascript = {
-						inlayHints = {
-							includeInlayEnumMemberValueHints = true,
-							includeInlayFunctionLikeReturnTypeHints = true,
-							includeInlayFunctionParameterTypeHints = true,
-							includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-							includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-							includeInlayPropertyDeclarationTypeHints = true,
-							includeInlayVariableTypeHints = true,
-						},
+						inlayHints = ts_ls_inlay_hints,
 					},
-					typescript = {
-						inlayHints = {
-							includeInlayEnumMemberValueHints = true,
-							includeInlayFunctionLikeReturnTypeHints = true,
-							includeInlayFunctionParameterTypeHints = true,
-							includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-							includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-							includeInlayPropertyDeclarationTypeHints = true,
-							includeInlayVariableTypeHints = true,
-						},
-					},
-				},
-				filetypes = {
-					"javascript",
-					"javascriptreact",
-					"javascript.jsx",
-					"typescript",
-					"typescriptreact",
-					"typescript.tsx",
 				},
 			},
 			eslint = {
+				cmd = { "vscode-eslint-language-server", "--stdio", "--max-old-space-size=12288" },
 				settings = {
 					autoFixOnSave = true,
-					codeAction = {
-						disableRuleComment = {
-							enable = true,
-							location = "separateLine",
-						},
-						showDocumentation = {
-							enable = true,
-						},
-					},
 				},
 			},
 			html = {},
 			templ = {},
-			tailwindcss = {
-				filetypes = {
-					"html",
-					"css",
-					"scss",
-					"javascript",
-					"javascriptreact",
-					"typescript",
-					"typescriptreact",
-					"templ",
-				},
-				init_options = {
-					userLanguages = {
-						javascript = "javascript",
-						typescript = "typescript",
-						html = "html",
-						css = "css",
-						scss = "scss",
-						javascriptreact = "javascriptreact",
-						typescriptreact = "typescriptreact",
-					},
-				},
-				-- haven't tested experimental features yet
-				-- settings = {
-				-- 	tailwindCSS = {
-				-- 		experimental = {
-				-- 			classRegex = {
-				-- 				"tw`([^`]*)", -- tw`...`
-				-- 				"tw\\(([^)]*)\\)", -- tw(...),
-				-- 				"tw\\.\\w+`([^`]*)`", -- tw.xxx`...`
-				-- 				"tw\\(.*?\\)\\((.*?)\\)", -- tw(...)(...),
-				-- 			},
-				-- 		},
-				-- 	},
-				-- },
-			},
+			tailwindcss = {},
 			cssmodules_ls = {
 				filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
 			},
@@ -224,6 +169,7 @@ return { -- LSP Configuration & Plugins
 					},
 				},
 			},
+			marksman = {},
 			lua_ls = {
 				Lua = {
 					workspace = { checkThirdParty = false },
@@ -249,12 +195,44 @@ return { -- LSP Configuration & Plugins
 			spectral = {},
 			taplo = {},
 			csharp_ls = {},
-			-- ocamllsp = {}, TODO: Installing ocaml lsp doesn't work
+			--  TODO: Installing ocaml lsp doesn't work
+			ocamllsp = {
+				manual_install = true,
+				cmd = { "dune", "exec", "ocamllsp" },
+				settings = {
+					codelens = { enable = true },
+					inlayHints = { enable = true },
+					syntaxDocumentation = { enable = true },
+				},
+			},
 		}
 
-		require("mason").setup()
+		local formatters = {
+			prettierd = {},
+			stylua = {},
+			prettier = {},
+		}
+		local manually_installed_servers = { "ocamllsp", "gleam", "rust_analyzer" }
 
-		local ensure_installed = vim.tbl_keys(servers or {})
+		local mason_tools_to_install = vim.tbl_keys(vim.tbl_deep_extend("force", {}, servers, formatters))
+		local ensure_installed = vim.tbl_filter(function(name)
+			return not vim.tbl_contains(manually_installed_servers, name)
+		end, mason_tools_to_install)
+
+		require("mason-tool-installer").setup({
+			auto_update = true,
+			run_on_start = true,
+			start_delay = 3000,
+			debounce_hours = 12,
+			ensure_installed = ensure_installed,
+		})
+
+		require("mason").setup({
+			ui = {
+				border = "rounded",
+			},
+		})
+
 		vim.list_extend(ensure_installed, {
 			"stylua",
 			"prettier",
@@ -272,6 +250,14 @@ return { -- LSP Configuration & Plugins
 					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
 					require("lspconfig")[server_name].setup(server)
 				end,
+			},
+		})
+
+		require("lspconfig.ui.windows").default_options.border = "rounded"
+
+		vim.diagnostic.config({
+			float = {
+				border = "rounded",
 			},
 		})
 	end,

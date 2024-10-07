@@ -1,6 +1,12 @@
 return { -- Highlight, edit, and navigate code
 	"nvim-treesitter/nvim-treesitter",
-	build = ":TSUpdate",
+	build = function()
+		require("nvim-treesitter.install").update({ with_sync = true })
+	end,
+	dependencies = {
+		-- Additional text objects for treesitter
+		"nvim-treesitter/nvim-treesitter-textobjects",
+	},
 	opts = {
 		ensure_installed = {
 			"c",
@@ -19,13 +25,17 @@ return { -- Highlight, edit, and navigate code
 			"markdown_inline",
 			"sql",
 			"ocaml",
+			"ocaml_interface",
+			"css",
+			"html",
+			"json",
+			"yaml",
 		}, -- Autoinstall languages that are not installed
 		auto_install = true,
 		highlight = {
 			enable = true,
-			additional_vim_regex_highlighting = { "ruby" },
 		},
-		indent = { enable = true, disable = { "ruby" } },
+		indent = { enable = true },
 	},
 	config = function(_, opts)
 		-- [[ Configure Treesitter ]] See `:help nvim-treesitter`

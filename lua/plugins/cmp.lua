@@ -1,6 +1,6 @@
 return { -- Autocompletion
 	"hrsh7th/nvim-cmp",
-	-- event = 'InsertEnter',
+	event = { "BufReadPost", "BufNewFile" },
 	dependencies = {
 		-- Snippet Engine & its associated nvim-cmp source
 		{
@@ -16,7 +16,6 @@ return { -- Autocompletion
 			end)(),
 			dependencies = {},
 		},
-		"saadparwaiz1/cmp_luasnip",
 
 		-- Adds other completion capabilities.
 		--  nvim-cmp does not ship with all sources by default. They are split
@@ -27,6 +26,7 @@ return { -- Autocompletion
 		"saadparwaiz1/cmp_luasnip",
 		"rafamadriz/friendly-snippets",
 		"onsails/lspkind.nvim",
+		"hrsh7th/cmp-nvim-lsp-signature-help",
 		"windwp/nvim-ts-autotag",
 		"windwp/nvim-autopairs",
 	},
@@ -79,12 +79,14 @@ return { -- Autocompletion
 				["<C-k>"] = cmp.mapping.select_prev_item(),
 				["<C-j>"] = cmp.mapping.select_next_item(),
 				["<C-b>"] = cmp.mapping.scroll_docs(-4),
+				["<C-c>"] = cmp.mapping.abort(), -- close completion window
 				["<C-f>"] = cmp.mapping.scroll_docs(4),
 			}),
 			sources = {
 				{ name = "nvim_lsp" },
 				{ name = "luasnip" },
 				{ name = "path" },
+				{ name = "nvim-lsp-signature-help" },
 			},
 			window = {
 				completion = cmp.config.window.bordered(),
@@ -101,6 +103,9 @@ return { -- Autocompletion
 						Copilot = "",
 					},
 				}),
+			},
+			experimental = {
+				ghost_text = true,
 			},
 		})
 	end,
