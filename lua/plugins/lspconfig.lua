@@ -92,6 +92,33 @@ return { -- LSP Configuration & Plugins
 			end,
 		})
 
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "python",
+			callback = function()
+				local poetryVenv = vim.fn.trim(vim.fn.system("poetry env info -p"))
+				local venvDirectPath = vim.fn.trim(vim.fn.system("echo $VIRTUAL_ENV"))
+				if vim.fn.isdirectory(poetryVenv) == 1 then
+					require("lspconfig").pyright.setup({
+						settings = {
+							python = {
+								pythonPath = poetryVenv .. "/bin/python",
+							},
+						},
+					})
+				else
+					if vim.fn.isdirectory(venvDirectPath) == 1 then
+						require("lspconfig").pyright.setup({
+							settings = {
+								python = {
+									pythonPath = venvDirectPath .. "/bin/python",
+								},
+							},
+						})
+					end
+				end
+			end,
+		})
+
 		-- LSP servers and clients are able to communicate to each other what features they support.
 		--  By default, Neovim doesn't support everything that is in the LSP specification.
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -133,7 +160,13 @@ return { -- LSP Configuration & Plugins
 				},
 			},
 			golangci_lint_ls = {},
-			pyright = {},
+			pyright = {
+				settings = {
+					python = {
+						pythonPath = ".venv/bin/python", -- Update to the correct path
+					},
+				},
+			},
 			ts_ls = {
 				settings = {
 					maxts_lsMemory = 12288,
@@ -146,7 +179,7 @@ return { -- LSP Configuration & Plugins
 				},
 			},
 			eslint = {
-				autostart = false,
+				-- autostart = false,
 				cmd = { "vscode-eslint-language-server", "--stdio", "--max-old-space-size=12288" },
 				settings = {
 					autoFixOnSave = true,
