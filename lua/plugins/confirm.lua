@@ -44,6 +44,7 @@ return { -- autoformat
 			markdown = { "prettier" },
 			python = { "black", "isort" },
 			sh = { "shfmt" },
+			dotenv = {},
 		},
 	},
 }

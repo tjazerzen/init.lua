@@ -51,6 +51,10 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+vim.cmd([[
+  autocmd BufRead,BufNewFile *.env set filetype=dotenv
+]])
+
 -- longer plugin configs are inside `lua/plugins/` directory and imported at the end of this file
 -- The rest are directly utilized here
 require("lazy").setup({
@@ -70,7 +74,6 @@ require("lazy").setup({
 			})
 
 			local api = require("supermaven-nvim.api")
-			api.use_free_version()
 
 			vim.keymap.set("n", "<leader>sm", api.toggle)
 		end,
@@ -153,6 +156,9 @@ require("lazy").setup({
 		config = function()
 			require("gitsigns").setup()
 		end,
+	},
+	{
+		"HallerPatrick/py_lsp.nvim",
 	},
 	{ import = "plugins" },
 }, {

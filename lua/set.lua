@@ -66,3 +66,5 @@ vim.opt.colorcolumn = "120"
 --  See `:help vim.keymap.set()`
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
+
+vim.g.python3_host_prog = "/opt/homebrew/opt/python@3.13/bin/python3"
