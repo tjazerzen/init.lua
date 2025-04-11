@@ -14,8 +14,6 @@ Support for the following functionality:
 - language server support
 - search and replace across entire repository
 - VS-Code-like emmet abbreviations
-- Self closing HTML tags
-
 
 ## Requirements
 
