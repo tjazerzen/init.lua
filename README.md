@@ -16,6 +16,7 @@ Support for the following functionality:
 - VS-Code-like emmet abbreviations
 - Self closing HTML tags
 
+
 ## Requirements
 
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
