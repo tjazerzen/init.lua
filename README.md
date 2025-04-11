@@ -20,6 +20,7 @@ Support for the following functionality:
 
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
 
+
 ## Installation
 
 1. Backup your previous configuration (if it exists)
