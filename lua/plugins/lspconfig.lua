@@ -150,13 +150,15 @@ return { -- LSP Configuration & Plugins
 			nil_ls = {},
 			sqlls = {},
 			gopls = {
-				gopls = {
-					hints = {
-						compositeLiteralFields = true,
-						constantValues = true,
-						functionTypeParameters = true,
-						parameterNames = true,
-						rangeVariableTypes = true,
+				settings = {
+					gopls = {
+						hints = {
+							compositeLiteralFields = true,
+							constantValues = true,
+							functionTypeParameters = true,
+							parameterNames = true,
+							rangeVariableTypes = true,
+						},
 					},
 				},
 			},
