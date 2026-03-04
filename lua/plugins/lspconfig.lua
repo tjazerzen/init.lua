@@ -162,7 +162,7 @@ return { -- LSP Configuration & Plugins
 					},
 				},
 			},
-			golangci_lint_ls = {},
+			-- golangci_lint_ls = {}, -- Removed: doesn't support textDocument/definition and conflicts with gopls
 			pyright = {
 				settings = {
 					python = {
